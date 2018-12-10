@@ -26,7 +26,8 @@ import {AbstractProviderAdapter, ProvidersModuleFactory, provider} from 'web3-pr
         providers:  {},
         methodModuleFactory,
         MethodFactory,
-        net: string,
+        // TODO: the Network type for the web3-net package have not been defined yet.
+        net: any,
         utils,
         formatters,
         options
