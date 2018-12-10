@@ -20,12 +20,13 @@
 import {AbstractProviderAdapter, ProvidersModuleFactory, provider} from 'web3-providers';
  export class Personal {
      constructor(
-        provider,
-        providersModuleFactory,
-        providers,
+        provider: AbstractProviderAdapter | provider | string,
+        providersModuleFactory: ProvidersModuleFactory,
+        // not sure what the below object structure is
+        providers:  {},
         methodModuleFactory,
-        methodModelFactory,
-        net,
+        MethodFactory,
+        net: string,
         utils,
         formatters,
         options
