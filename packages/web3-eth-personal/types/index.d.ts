@@ -17,6 +17,7 @@
  * @date 2018
  */
 
+import {AbstractProviderAdapter, ProvidersModuleFactory, provider} from 'web3-providers';
  export class Personal {
      constructor(
         provider,
