@@ -18,6 +18,8 @@
  */
 
 import {AbstractProviderAdapter, ProvidersModuleFactory, provider} from 'web3-providers';
+import {Web3ModuleOptions} from 'web3-core';
+import * as Utils from 'web3-utils'
 export class Personal {
     constructor(
         provider: AbstractProviderAdapter | provider | string,
@@ -38,14 +40,18 @@ export class Personal {
         // have not been defined yet.
         net: any,
         utils,
-        formatters,
-        options
+        // dont have type yet
+        // as this is in web3-core-helpers
+        // can be sorted later once dependencies
+        // are cleaned up
+        formatters: any,
+        options: Web3ModuleOptions
     );
-    readonly defaultGasPrice: string;
-    readonly defaultGas: number;
-    readonly transactionBlockTimeout: number;
-    readonly transactionConfirmationBlocks: number;
-    readonly transactionPollingTimeout: number;
-    readonly defaultAccount: string | null;
-    readonly defaultBlock: string | number;
+    defaultGasPrice: string;
+    defaultGas: number;
+    transactionBlockTimeout: number;
+    transactionConfirmationBlocks: number;
+    transactionPollingTimeout: number;
+    defaultAccount: string | null;
+    defaultBlock: string | number;
 }

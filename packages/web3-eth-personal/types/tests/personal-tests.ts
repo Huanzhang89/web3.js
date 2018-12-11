@@ -17,4 +17,19 @@
  * @date 2018
  */
 
- import { Personal } from 'web3-eth-personal'
+import { Personal } from 'web3-eth-personal';
+import {HttpProvider} from 'web3-providers';
+const options = {
+    timeout: 20000,
+    headers: [
+        {
+            name: 'Access-Control-Allow-Origin', value: '*'
+        }
+    ]
+};
+const httpProvider = new HttpProvider('http://localhost:8545', options);
+
+const personalClass = new Personal(
+    httpProvider,
+
+)
