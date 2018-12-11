@@ -18,18 +18,34 @@
  */
 
 import {AbstractProviderAdapter, ProvidersModuleFactory, provider} from 'web3-providers';
- export class Personal {
-     constructor(
+export class Personal {
+    constructor(
         provider: AbstractProviderAdapter | provider | string,
         providersModuleFactory: ProvidersModuleFactory,
         // not sure what the below object structure is
         providers:  {},
-        methodModuleFactory,
-        MethodFactory,
-        // TODO: the Network type for the web3-net package have not been defined yet.
+        // dont have type yet
+        // as this is in web3-core-method
+        // can be sorted later once dependencies
+        // are cleaned up
+        methodModuleFactory: any,
+        // dont have type yet
+        // as this is in web3-core-method
+        // can be sorted later once dependencies
+        // are cleaned up
+        MethodFactory: any,
+        // TODO: the Network type for the web3-net package
+        // have not been defined yet.
         net: any,
         utils,
         formatters,
         options
-     )
- }
+    );
+    readonly defaultGasPrice: string;
+    readonly defaultGas: number;
+    readonly transactionBlockTimeout: number;
+    readonly transactionConfirmationBlocks: number;
+    readonly transactionPollingTimeout: number;
+    readonly defaultAccount: string | null;
+    readonly defaultBlock: string | number;
+}
