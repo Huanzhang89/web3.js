@@ -17,41 +17,39 @@
  * @date 2018
  */
 
+// TypeScript Version: 2.2
 import {AbstractProviderAdapter, ProvidersModuleFactory, provider} from 'web3-providers';
-import {Web3ModuleOptions} from 'web3-core';
+import {AbstractWeb3Module, Web3ModuleOptions, Providers} from 'web3-core';
+
 import * as Utils from 'web3-utils'
-export class Personal {
+export class Personal extends AbstractWeb3Module {
     constructor(
-        provider: AbstractProviderAdapter | provider | string,
+        provider: AbstractProviderAdapter | provider,
         providersModuleFactory: ProvidersModuleFactory,
-        // not sure what the below object structure is
-        providers:  {},
+        providers: Providers,
         // dont have type yet
         // as this is in web3-core-method
         // can be sorted later once dependencies
         // are cleaned up
-        methodModuleFactory: any,
-        // dont have type yet
-        // as this is in web3-core-method
-        // can be sorted later once dependencies
-        // are cleaned up
-        MethodFactory: any,
-        // TODO: the Network type for the web3-net package
-        // have not been defined yet.
-        net: any,
-        utils,
+        net?: any,
         // dont have type yet
         // as this is in web3-core-helpers
         // can be sorted later once dependencies
         // are cleaned up
-        formatters: any,
-        options: Web3ModuleOptions
-    );
-    defaultGasPrice: string;
-    defaultGas: number;
-    transactionBlockTimeout: number;
-    transactionConfirmationBlocks: number;
-    transactionPollingTimeout: number;
-    defaultAccount: string | null;
-    defaultBlock: string | number;
+        formatters?: any,
+        utils?: any,
+        // dont have type yet
+        // as this is in web3-core-method
+        // can be sorted later once dependencies
+        // are cleaned up
+        MethodFactory?: any,
+        options?: Web3ModuleOptions
+    )
+
+    setProvider(): boolean;
+    providers(): Providers;
+    givenProvider(): any;
+    BatchRequest(): any;
+    extend(): any;
+    newAccount(password: string): Promise<string>
 }

@@ -17,8 +17,10 @@
  * @date 2018
  */
 
+import * as net from 'net';
 import { Personal } from 'web3-eth-personal';
-import {HttpProvider} from 'web3-providers';
+import {ProvidersModuleFactory, HttpProvider, IpcProvider, WebsocketProvider} from 'web3-providers';
+
 const options = {
     timeout: 20000,
     headers: [
@@ -27,9 +29,20 @@ const options = {
         }
     ]
 };
+
+const providersModuleFactory = new ProvidersModuleFactory();
 const httpProvider = new HttpProvider('http://localhost:8545', options);
-
-const personalClass = new Personal(
+const ipcProvider = new IpcProvider('/Users/myuser/Library/Ethereum/geth.ipc', new net.Server());
+const websocketProvider = new WebsocketProvider('ws://localhost:8546');
+const PersonalClass = new Personal(
     httpProvider,
-
+    providersModuleFactory,
+    {
+        HttpProvider: httpProvider,
+        WebsocketProvider: websocketProvider,
+        IpcProvider: ipcProvider
+    },
 )
+
+// $ExpectType string
+PersonalClass.defaultGasPrice;
