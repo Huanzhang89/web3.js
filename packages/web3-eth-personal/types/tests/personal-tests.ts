@@ -20,6 +20,8 @@
 import * as net from 'net';
 import { Personal } from 'web3-eth-personal';
 import {ProvidersModuleFactory, HttpProvider, IpcProvider, WebsocketProvider} from 'web3-providers';
+import {Network} from 'web3-net';
+import {MethodModuleFactory} from 'web3-core-method';
 
 const options = {
     timeout: 20000,
@@ -30,10 +32,21 @@ const options = {
     ]
 };
 
+const networkOptions = {
+    defaultAccount: '0x5680b9a5b3f1614c5b8edf1c4e7aba991394bf6d',
+    defaultBlock: 600123,
+    transactionBlockTimeout: 50,
+    transactionConfirmationBlocks: 24,
+    transactionPollingTimeout: 15,
+    defaultGasPrice: '2',
+    defaultGas: 50000
+}
+
 const providersModuleFactory = new ProvidersModuleFactory();
 const httpProvider = new HttpProvider('http://localhost:8545', options);
 const ipcProvider = new IpcProvider('/Users/myuser/Library/Ethereum/geth.ipc', new net.Server());
 const websocketProvider = new WebsocketProvider('ws://localhost:8546');
+
 const PersonalClass = new Personal(
     httpProvider,
     providersModuleFactory,
@@ -42,7 +55,18 @@ const PersonalClass = new Personal(
         WebsocketProvider: websocketProvider,
         IpcProvider: ipcProvider
     },
+    new MethodModuleFactory(),
+    new Network(httpProvider, networkOptions)
 )
 
-// $ExpectType string
-PersonalClass.defaultGasPrice;
+// $ExpectType boolean
+PersonalClass.setProvider(httpProvider)
+
+// $ExpectType Providers
+PersonalClass.providers;
+
+// $ExpectType AbstractProviderAdapter | null
+PersonalClass.givenProvider;
+
+// $ExpectType AbstractProviderAdapter | null
+PersonalClass.currentProvider;

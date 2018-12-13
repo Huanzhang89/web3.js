@@ -17,21 +17,17 @@
  * @date 2018
  */
 
-// TypeScript Version: 2.2
+import * as net from 'net';
 import {AbstractProviderAdapter, ProvidersModuleFactory, provider} from 'web3-providers';
 import {AbstractWeb3Module, Web3ModuleOptions, Providers} from 'web3-core';
-
-import * as Utils from 'web3-utils'
+import { Network } from 'web3-net';
+import * as Utils from 'web3-utils';
 export class Personal extends AbstractWeb3Module {
     constructor(
         provider: AbstractProviderAdapter | provider,
         providersModuleFactory: ProvidersModuleFactory,
         providers: Providers,
-        // dont have type yet
-        // as this is in web3-core-method
-        // can be sorted later once dependencies
-        // are cleaned up
-        net?: any,
+        net: Network,
         // dont have type yet
         // as this is in web3-core-helpers
         // can be sorted later once dependencies
@@ -46,10 +42,15 @@ export class Personal extends AbstractWeb3Module {
         options?: Web3ModuleOptions
     )
 
-    setProvider(): boolean;
-    providers(): Providers;
+    setProvider(provider: AbstractProviderAdapter | provider, net?: net.Server): boolean;
     givenProvider(): any;
     BatchRequest(): any;
+    providers: Providers;
     extend(): any;
     newAccount(password: string): Promise<string>
+}
+
+interface BatchRequest {
+    add(request: Promise<any>): void,
+    execute(): Promise<any>,
 }
