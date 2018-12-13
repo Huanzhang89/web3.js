@@ -19,7 +19,7 @@
 
 import * as net from 'net';
 import { Personal } from 'web3-eth-personal';
-import {ProvidersModuleFactory, HttpProvider, IpcProvider, WebsocketProvider} from 'web3-providers';
+import {ProvidersModuleFactory, HttpProvider, IpcProvider, WebsocketProvider, BatchRequest, JsonRpcMapper, JsonRpcResponseValidator} from 'web3-providers';
 import {Network} from 'web3-net';
 import {MethodModuleFactory} from 'web3-core-method';
 
@@ -47,6 +47,8 @@ const httpProvider = new HttpProvider('http://localhost:8545', options);
 const ipcProvider = new IpcProvider('/Users/myuser/Library/Ethereum/geth.ipc', new net.Server());
 const websocketProvider = new WebsocketProvider('ws://localhost:8546');
 
+const batchRequest = new BatchRequest(httpProvider, JsonRpcMapper, JsonRpcResponseValidator);
+
 const PersonalClass = new Personal(
     httpProvider,
     providersModuleFactory,
@@ -70,3 +72,12 @@ PersonalClass.givenProvider;
 
 // $ExpectType AbstractProviderAdapter | null
 PersonalClass.currentProvider;
+
+// $ExpectType void
+batchRequest.add({})
+
+// $ExpectType void
+batchRequest.execute();
+
+// $ExpectType boolean
+batchRequest.hasOutputFormatter({});

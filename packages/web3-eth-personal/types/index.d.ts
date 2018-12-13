@@ -18,7 +18,7 @@
  */
 
 import * as net from 'net';
-import {AbstractProviderAdapter, ProvidersModuleFactory, provider} from 'web3-providers';
+import {AbstractProviderAdapter, ProvidersModuleFactory, provider, BatchRequest} from 'web3-providers';
 import {AbstractWeb3Module, Web3ModuleOptions, Providers} from 'web3-core';
 import { Network } from 'web3-net';
 import * as Utils from 'web3-utils';
@@ -43,14 +43,9 @@ export class Personal extends AbstractWeb3Module {
     )
 
     setProvider(provider: AbstractProviderAdapter | provider, net?: net.Server): boolean;
-    givenProvider(): any;
-    BatchRequest(): any;
+    givenProvider(): AbstractProviderAdapter;
+    BatchRequest(): BatchRequest;
     providers: Providers;
     extend(): any;
     newAccount(password: string): Promise<string>
-}
-
-interface BatchRequest {
-    add(request: Promise<any>): void,
-    execute(): Promise<any>,
 }
