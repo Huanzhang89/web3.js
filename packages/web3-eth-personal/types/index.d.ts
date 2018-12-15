@@ -20,32 +20,41 @@
 import * as net from 'net';
 import {AbstractProviderAdapter, ProvidersModuleFactory, provider, BatchRequest} from 'web3-providers';
 import {AbstractWeb3Module, Web3ModuleOptions, Providers} from 'web3-core';
+import { Transaction, SignedTransaction } from 'web3-eth'
 import { Network } from 'web3-net';
-import * as Utils from 'web3-utils';
 export class Personal extends AbstractWeb3Module {
     constructor(
         provider: AbstractProviderAdapter | provider,
         providersModuleFactory: ProvidersModuleFactory,
         providers: Providers,
-        net: Network,
         // dont have type yet
         // as this is in web3-core-helpers
         // can be sorted later once dependencies
         // are cleaned up
-        formatters?: any,
-        utils?: any,
+        methodModuleFactory: any,
         // dont have type yet
         // as this is in web3-core-method
         // can be sorted later once dependencies
         // are cleaned up
-        MethodFactory?: any,
+        methodFactory: any,
+        net: Network,
+        formatters?: any,
+        utils?: any,
         options?: Web3ModuleOptions
     )
 
     setProvider(provider: AbstractProviderAdapter | provider, net?: net.Server): boolean;
-    givenProvider(): AbstractProviderAdapter;
-    BatchRequest(): BatchRequest;
+    givenProvider: AbstractProviderAdapter;
+    BatchRequest: new() => BatchRequest;
     providers: Providers;
-    extend(): any;
-    newAccount(password: string): Promise<string>
+    newAccount(password: string, callback?: (error: Error, address: string) => void): Promise<string>;
+    sign(dataToSign: string, address: string, password: string, callback?: (error: Error, signature: string) => void): Promise<string>;
+    ecRecover(dataThatWasSigned: string, signature: string, callback?: (error: Error, address: string) => void): Promise<string>;
+    signTransaction(transation: Transaction, password: string, callback?: (error: Error, RLPEncodedTransaction: RLPEncodedTransaction) => void): Promise<RLPEncodedTransaction>;
+    unlockAccount(address: string, password: string, unlockDuration: number, callback?: (error: Error) => void): void;
+}
+
+export interface RLPEncodedTransaction {
+    raw: string,
+    tx: SignedTransaction
 }

@@ -21,7 +21,6 @@ import * as net from 'net';
 import { Personal } from 'web3-eth-personal';
 import {ProvidersModuleFactory, HttpProvider, IpcProvider, WebsocketProvider, BatchRequest, JsonRpcMapper, JsonRpcResponseValidator} from 'web3-providers';
 import {Network} from 'web3-net';
-import {MethodModuleFactory} from 'web3-core-method';
 
 const options = {
     timeout: 20000,
@@ -57,7 +56,8 @@ const PersonalClass = new Personal(
         WebsocketProvider: websocketProvider,
         IpcProvider: ipcProvider
     },
-    new MethodModuleFactory(),
+    {},
+    {},
     new Network(httpProvider, networkOptions)
 )
 
@@ -67,11 +67,14 @@ PersonalClass.setProvider(httpProvider)
 // $ExpectType Providers
 PersonalClass.providers;
 
-// $ExpectType AbstractProviderAdapter | null
+// $ExpectType AbstractProviderAdapter
 PersonalClass.givenProvider;
 
-// $ExpectType AbstractProviderAdapter | null
+// $ExpectType AbstractProviderAdapter
 PersonalClass.currentProvider;
+
+// $ExpectType BatchRequest
+new PersonalClass.BatchRequest();
 
 // $ExpectType void
 batchRequest.add({})
@@ -81,3 +84,47 @@ batchRequest.execute();
 
 // $ExpectType boolean
 batchRequest.hasOutputFormatter({});
+
+// $ExpectType Promise<string>
+PersonalClass.newAccount('test password');
+
+// $ExpectType Promise<string>
+PersonalClass.newAccount('test password', (error: Error, address: string) => {});
+
+// $ExpectType Promise<string>
+PersonalClass.sign('Hello world', '0x11f4d0A3c12e86B4b5F39B213F7E19D048276DAe', 'test password!');
+
+// $ExpectType Promise<string>
+PersonalClass.sign('Hello world', '0x11f4d0A3c12e86B4b5F39B213F7E19D048276DAe', 'test password!', (error: Error, signature: string) => {});
+
+// $ExpectType Promise<string>
+PersonalClass.ecRecover(
+    'Hello world',
+    '0x30755ed65396facf86c53e6217c52b4daebe72aa4941d89635409de4c9c7f9466d4e9aaec7977f05e923889b33c0d0dd27d7226b6e6f56ce737465c5cfd04be400'
+);
+
+// $ExpectType Promise<string>
+PersonalClass.ecRecover(
+    'Hello world',
+    '0x30755ed65396facf86c53e6217c52b4daebe72aa4941d89635409de4c9c7f9466d4e9aaec7977f05e923889b33c0d0dd27d7226b6e6f56ce737465c5cfd04be400',
+    (error: Error, address: string) => {}
+);
+
+// $ExpectType Promise<RLPEncodedTransaction>
+PersonalClass.signTransaction(
+    {
+        from: "0xEB014f8c8B418Db6b45774c326A0E64C78914dC0",
+        gasPrice: "20000000000",
+        gas: "21000",
+        to: '0x3535353535353535353535353535353535353535',
+        value: "1000000000000000000",
+        data: ""
+    },
+    'test password'
+);
+
+// $ExpectType void
+PersonalClass.unlockAccount("0x11f4d0A3c12e86B4b5F39B213F7E19D048276DAe", "test password!", 600);
+
+// $ExpectType void
+PersonalClass.unlockAccount("0x11f4d0A3c12e86B4b5F39B213F7E19D048276DAe", "test password!", 600, (error: Error) => {});
